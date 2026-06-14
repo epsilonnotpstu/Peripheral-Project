@@ -9,3 +9,5 @@ models/ecg_resnet_se.keras
 models/ecg_model_int8.tflite
 *.log
 .DS_Store
+mitbih dataset/
+ECG Dataset/
