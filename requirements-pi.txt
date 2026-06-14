@@ -1,0 +1,21 @@
+# Raspberry Pi 3 requirements (NO full TensorFlow — too heavy)
+# Install with: pip install -r requirements-pi.txt
+# tflite-runtime is ~3 MB vs TensorFlow's ~300 MB
+
+flask==3.0.3
+flask-socketio==5.3.6
+flask-sqlalchemy==3.1.1
+flask-migrate==4.0.7
+eventlet==0.36.1
+python-dotenv==1.0.1
+pyserial==3.5
+scipy==1.13.1
+numpy==1.26.4
+reportlab==4.2.2
+matplotlib==3.9.0
+Pillow==10.3.0
+
+# TFLite runtime only — install pre-built wheel for ARM:
+# pip install https://github.com/google-coral/pycoral/releases/download/v2.0.0/tflite_runtime-2.5.0.post1-cp39-cp39-linux_armv7l.whl
+# Or for Python 3.11+: use tensorflow-lite package from tflite-support
+tflite-runtime==2.14.0

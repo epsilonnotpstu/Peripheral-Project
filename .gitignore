@@ -1,0 +1,11 @@
+instance/
+reports/
+__pycache__/
+*.pyc
+*.pyo
+.env
+*.db
+models/ecg_resnet_se.keras
+models/ecg_model_int8.tflite
+*.log
+.DS_Store

@@ -1,0 +1,65 @@
+<!-- Patient Info Modal -->
+<div class="modal fade" id="patientModal" tabindex="-1" aria-labelledby="patientModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="patientModalLabel">
+          <i class="bi bi-person-fill me-2"></i>Patient Information
+        </h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <form id="patient-form" novalidate>
+          <div class="mb-3">
+            <label class="form-label" for="patient-name">Full Name <span class="text-danger">*</span></label>
+            <input type="text" class="form-control" id="patient-name" placeholder="Enter patient name" required>
+            <div class="invalid-feedback">Please enter the patient's name.</div>
+          </div>
+          <div class="row">
+            <div class="col-6 mb-3">
+              <label class="form-label" for="patient-age">Age</label>
+              <input type="number" class="form-control" id="patient-age" min="0" max="120" placeholder="e.g. 45">
+            </div>
+            <div class="col-6 mb-3">
+              <label class="form-label" for="patient-gender">Gender</label>
+              <select class="form-select" id="patient-gender">
+                <option value="">Select…</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label" for="patient-medical-id">Medical ID / MRN</label>
+            <input type="text" class="form-control" id="patient-medical-id" placeholder="Optional">
+          </div>
+          <div class="mb-3">
+            <label class="form-label" for="patient-notes">Clinical Notes</label>
+            <textarea class="form-control" id="patient-notes" rows="2" placeholder="Optional notes"></textarea>
+          </div>
+        </form>
+
+        <!-- Existing patient selector -->
+        <hr class="border-secondary">
+        <div class="mb-2">
+          <label class="form-label">Or select existing patient:</label>
+          <select class="form-select" id="existing-patient-select">
+            <option value="">— New patient —</option>
+            {% for p in patients %}
+            <option value="{{ p.id }}" data-name="{{ p.name }}" data-age="{{ p.age or '' }}" data-gender="{{ p.gender or '' }}" data-medical="{{ p.medical_id or '' }}">
+              {{ p.name }}{% if p.age %} ({{ p.age }}){% endif %}{% if p.medical_id %} — {{ p.medical_id }}{% endif %}
+            </option>
+            {% endfor %}
+          </select>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-primary" id="save-patient-btn">
+          <i class="bi bi-check2-circle me-1"></i>Save &amp; Close
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

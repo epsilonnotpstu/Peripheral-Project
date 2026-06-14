@@ -1,0 +1,62 @@
+<!-- Stat Cards Row: BPM / Classification / Confidence / Motion -->
+<div class="row g-2 mt-1">
+
+  <!-- BPM Card -->
+  <div class="col-6 col-md-3">
+    <div class="stat-card">
+      <div class="card-label"><i class="bi bi-heart-fill me-1"></i>Heart Rate</div>
+      <div class="stat-value bpm-normal" id="bpm-value">--</div>
+      <div class="stat-unit">BPM</div>
+    </div>
+  </div>
+
+  <!-- AI Classification Card -->
+  <div class="col-6 col-md-3">
+    <div class="stat-card">
+      <div class="card-label"><i class="bi bi-cpu me-1"></i>AI Classification</div>
+      <div class="mt-2">
+        <span class="class-badge class-Normal" id="class-badge" id="class-name-badge">--</span>
+      </div>
+      <div class="stat-unit mt-2" id="class-full-name" style="font-size:0.8rem">Awaiting signal…</div>
+    </div>
+  </div>
+
+  <!-- Confidence Card -->
+  <div class="col-6 col-md-3">
+    <div class="stat-card">
+      <div class="card-label"><i class="bi bi-graph-up me-1"></i>Confidence</div>
+      <div class="stat-value" id="confidence-value" style="font-size:2.2rem">--%</div>
+
+      <!-- Mini probability bars for N/S/V/F/Q -->
+      <div class="prob-bar-container mt-2">
+        {% for short in ['N','S','V','F','Q'] %}
+        <div class="prob-bar-row">
+          <span class="prob-bar-label">{{ short }}</span>
+          <div class="prob-bar-track">
+            <div class="prob-bar-fill" id="prob-bar-{{ short }}"
+                 style="width:0%;background:{% if short=='N' %}#4caf50{% elif short=='S' %}#2196f3{% elif short=='V' %}#f44336{% elif short=='F' %}#ff9800{% else %}#9e9e9e{% endif %}">
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+
+  <!-- Motion Card -->
+  <div class="col-6 col-md-3">
+    <div class="stat-card">
+      <div class="card-label"><i class="bi bi-activity me-1"></i>Motion / Artifact</div>
+      <div class="mt-3">
+        <i class="bi bi-person-standing fs-2 motion-stable" id="motion-icon"></i>
+      </div>
+      <div class="stat-unit mt-1 motion-stable" id="motion-text">Stable</div>
+      <div class="mt-1">
+        <div style="height:6px;background:#1a2035;border-radius:3px;overflow:hidden">
+          <div id="motion-level-bar" style="height:100%;width:0%;background:#ffc107;border-radius:3px;transition:width 0.3s ease"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

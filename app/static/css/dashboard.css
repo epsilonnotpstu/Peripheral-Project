@@ -1,0 +1,303 @@
+/* ECG Monitor Dashboard — Dark Medical Theme */
+
+:root {
+  --ecg-green: #00e676;
+  --ecg-bg: #0a0e1a;
+  --card-bg: #0d1321;
+  --card-border: #1e2d4a;
+  --text-primary: #e8f0fe;
+  --text-secondary: #8fa3c1;
+  --bpm-normal: #4caf50;
+  --bpm-warning: #ff9800;
+  --bpm-danger: #f44336;
+  --class-normal: #4caf50;
+  --class-sve: #2196f3;
+  --class-ve: #f44336;
+  --class-fusion: #ff9800;
+  --class-unknown: #9e9e9e;
+  --motion-active: #ffc107;
+}
+
+/* ── Base ─────────────────────────────────────────────────────────────────── */
+body {
+  background-color: var(--ecg-bg);
+  color: var(--text-primary);
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  min-height: 100vh;
+}
+
+/* ── Navbar ──────────────────────────────────────────────────────────────── */
+.navbar-ecg {
+  background: linear-gradient(90deg, #0d1b2a 0%, #1a237e 100%);
+  border-bottom: 2px solid #1565c0;
+  padding: 0.6rem 1.5rem;
+}
+
+.navbar-brand-ecg {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--ecg-green) !important;
+  letter-spacing: 0.05em;
+}
+
+.navbar-brand-ecg .bi {
+  margin-right: 0.4rem;
+  animation: heartbeat 1.4s ease-in-out infinite;
+}
+
+@keyframes heartbeat {
+  0%, 100% { transform: scale(1); }
+  14%       { transform: scale(1.2); }
+  28%       { transform: scale(1); }
+  42%       { transform: scale(1.15); }
+  56%       { transform: scale(1); }
+}
+
+/* ── Stat cards ──────────────────────────────────────────────────────────── */
+.stat-card {
+  background-color: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 12px;
+  padding: 1rem 1.2rem;
+  text-align: center;
+  height: 100%;
+  transition: border-color 0.3s ease;
+}
+
+.stat-card:hover {
+  border-color: #2979ff;
+}
+
+.stat-card .card-label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-secondary);
+  margin-bottom: 0.4rem;
+}
+
+.stat-card .stat-value {
+  font-size: 2.8rem;
+  font-weight: 700;
+  line-height: 1;
+  margin-bottom: 0.3rem;
+}
+
+.stat-card .stat-unit {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+/* BPM color states */
+#bpm-value.bpm-normal   { color: var(--bpm-normal); }
+#bpm-value.bpm-warning  { color: var(--bpm-warning); }
+#bpm-value.bpm-danger   { color: var(--bpm-danger); }
+
+/* ── ECG chart container ─────────────────────────────────────────────────── */
+.ecg-card {
+  background-color: #050810;
+  border: 1px solid var(--card-border);
+  border-radius: 12px;
+  padding: 0.8rem;
+  position: relative;
+}
+
+.ecg-card .ecg-label {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--ecg-green);
+  position: absolute;
+  top: 0.6rem;
+  left: 1rem;
+}
+
+#ecg-canvas {
+  width: 100% !important;
+  height: 240px !important;
+  display: block;
+}
+
+/* ── Classification badge ────────────────────────────────────────────────── */
+.class-badge {
+  display: inline-block;
+  padding: 0.35rem 1rem;
+  border-radius: 20px;
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+}
+
+.class-Normal         { background: rgba(76,175,80,.15); color: var(--class-normal); border: 1px solid var(--class-normal); }
+.class-Supraventricular { background: rgba(33,150,243,.15); color: var(--class-sve); border: 1px solid var(--class-sve); }
+.class-Ventricular    { background: rgba(244,67,54,.15); color: var(--class-ve); border: 1px solid var(--class-ve); animation: pulse-red 1s ease infinite; }
+.class-Fusion         { background: rgba(255,152,0,.15); color: var(--class-fusion); border: 1px solid var(--class-fusion); animation: pulse-orange 1s ease infinite; }
+.class-Unknown        { background: rgba(158,158,158,.15); color: var(--class-unknown); border: 1px solid var(--class-unknown); }
+
+@keyframes pulse-red {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(244,67,54,0.4); }
+  50%       { box-shadow: 0 0 0 6px rgba(244,67,54,0); }
+}
+@keyframes pulse-orange {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(255,152,0,0.4); }
+  50%       { box-shadow: 0 0 0 6px rgba(255,152,0,0); }
+}
+
+/* ── Confidence bar ──────────────────────────────────────────────────────── */
+.confidence-bar-wrapper {
+  background: #1a2035;
+  border-radius: 6px;
+  height: 10px;
+  overflow: hidden;
+  margin-top: 0.6rem;
+}
+
+.confidence-bar-fill {
+  height: 100%;
+  border-radius: 6px;
+  background: linear-gradient(90deg, #1565c0, #00e676);
+  transition: width 0.4s ease;
+}
+
+/* ── Motion flag ─────────────────────────────────────────────────────────── */
+.motion-stable { color: #4caf50; }
+.motion-active { color: var(--motion-active); animation: blink 0.8s step-start infinite; }
+
+@keyframes blink {
+  50% { opacity: 0.3; }
+}
+
+/* ── Connection badge ────────────────────────────────────────────────────── */
+#connection-badge {
+  font-size: 0.75rem;
+  padding: 0.3rem 0.7rem;
+  border-radius: 12px;
+  transition: all 0.3s ease;
+}
+
+/* ── Session table ───────────────────────────────────────────────────────── */
+.session-table-wrapper {
+  max-height: 280px;
+  overflow-y: auto;
+}
+
+.session-table {
+  font-size: 0.85rem;
+}
+
+.session-table th {
+  background-color: #0d1b2a;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  font-size: 0.72rem;
+  letter-spacing: 0.07em;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.session-table td {
+  color: var(--text-primary);
+  vertical-align: middle;
+}
+
+.session-table tbody tr:hover {
+  background-color: rgba(41, 121, 255, 0.08);
+  cursor: default;
+}
+
+/* ── Alert toast ─────────────────────────────────────────────────────────── */
+.ecg-toast {
+  background-color: #1a0a0a;
+  border: 1px solid #f44336;
+  color: #ffcdd2;
+  min-width: 300px;
+}
+
+.ecg-toast .toast-header {
+  background-color: #f44336;
+  color: white;
+  font-weight: 700;
+}
+
+/* ── Control buttons ─────────────────────────────────────────────────────── */
+#start-stop-btn {
+  min-width: 160px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+#start-stop-btn:active {
+  transform: scale(0.97);
+}
+
+/* ── Patient modal ───────────────────────────────────────────────────────── */
+.modal-content {
+  background-color: #0d1321;
+  border: 1px solid var(--card-border);
+  color: var(--text-primary);
+}
+
+.modal-header {
+  border-bottom: 1px solid var(--card-border);
+}
+
+.form-control, .form-select {
+  background-color: #0a0e1a;
+  border: 1px solid var(--card-border);
+  color: var(--text-primary);
+}
+
+.form-control:focus, .form-select:focus {
+  background-color: #0a0e1a;
+  border-color: #2979ff;
+  color: var(--text-primary);
+  box-shadow: 0 0 0 0.2rem rgba(41,121,255,.25);
+}
+
+.form-label {
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+}
+
+/* ── Probability mini-bars ───────────────────────────────────────────────── */
+.prob-bar-container {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.prob-bar-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.72rem;
+}
+
+.prob-bar-label {
+  width: 18px;
+  text-align: right;
+  color: var(--text-secondary);
+}
+
+.prob-bar-track {
+  flex: 1;
+  height: 6px;
+  background: #1a2035;
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.prob-bar-fill {
+  height: 100%;
+  border-radius: 3px;
+  transition: width 0.3s ease;
+}
+
+/* ── Responsive ──────────────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .stat-card .stat-value { font-size: 2rem; }
+  #ecg-canvas            { height: 180px !important; }
+}

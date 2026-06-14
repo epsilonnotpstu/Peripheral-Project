@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+
+{% block title %}Real-time ECG Dashboard{% endblock %}
+
+{% block content %}
+
+<!-- ── Row 1: Controls ──────────────────────────────────────────────────────── -->
+<div class="row g-2 align-items-center">
+
+  <!-- Patient selector / info -->
+  <div class="col-12 col-md-5">
+    <div class="stat-card d-flex align-items-center justify-content-between gap-2">
+      <div>
+        <div class="card-label"><i class="bi bi-person me-1"></i>Current Patient</div>
+        <div class="fw-bold" id="current-patient-display" style="font-size:1rem">
+          None selected
+        </div>
+      </div>
+      <button class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#patientModal">
+        <i class="bi bi-person-plus-fill me-1"></i>Set Patient
+      </button>
+    </div>
+  </div>
+
+  <!-- Session controls -->
+  <div class="col-12 col-md-4">
+    <div class="stat-card d-flex align-items-center justify-content-between gap-2">
+      <div>
+        <div class="card-label"><i class="bi bi-record-circle me-1"></i>Recording</div>
+        <div class="fw-bold" id="recording-status-text" style="font-size:0.9rem">Stopped</div>
+        <div style="font-size:0.75rem;color:var(--text-secondary)" id="session-info-text"></div>
+      </div>
+      <button class="btn btn-success" id="start-stop-btn" disabled>
+        <i class="bi bi-play-fill me-1" id="start-stop-icon"></i>
+        <span id="start-stop-text">Start Recording</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Session timer + beat counter -->
+  <div class="col-12 col-md-3">
+    <div class="stat-card text-center">
+      <div class="card-label"><i class="bi bi-stopwatch me-1"></i>Session Timer</div>
+      <div class="stat-value" id="session-timer" style="font-size:2rem;font-family:monospace">00:00</div>
+      <div class="stat-unit"><span id="beat-counter">0</span> beats analyzed</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ── Row 2: ECG Waveform ─────────────────────────────────────────────────── -->
+{% include "partials/ecg_chart.html" %}
+
+<!-- ── Row 3: Stat Cards ───────────────────────────────────────────────────── -->
+{% include "partials/stat_cards.html" %}
+
+<!-- ── Row 4: Beat history + Session table ────────────────────────────────── -->
+<div class="row g-2 mt-1">
+
+  <!-- Last 20 beats mini-history -->
+  <div class="col-12 col-md-5">
+    <div class="stat-card" style="text-align:left;padding:0.8rem">
+      <div class="card-label mb-2"><i class="bi bi-list-check me-1"></i>Beat History (Last 20)</div>
+      <div id="beat-history" style="display:flex;flex-wrap:wrap;gap:4px">
+        <!-- Populated by JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Session history table -->
+  <div class="col-12 col-md-7">
+    {% include "partials/session_table.html" %}
+  </div>
+
+</div>
+
+<!-- ── Row 5: Download report ────────────────────────────────────────────────── -->
+<div class="row mt-2 mb-3">
+  <div class="col-12 d-flex justify-content-end gap-2">
+    <button class="btn btn-outline-info" id="download-report-btn" disabled>
+      <i class="bi bi-file-earmark-pdf-fill me-1"></i>Download PDF Report
+    </button>
+    <button class="btn btn-outline-secondary" onclick="loadSessions()">
+      <i class="bi bi-arrow-clockwise me-1"></i>Refresh History
+    </button>
+  </div>
+</div>
+
+<!-- Patient Modal -->
+{% include "partials/patient_modal.html" %}
+
+{% endblock %}
+
+
+{% block scripts_extra %}
+<script>
+  // Pass server-side data to JS
+  window.APP_CONFIG = {
+    simulate: {{ simulate_mode | tojson }},
+    modelLoaded: {{ model_loaded | tojson }},
+    fs: 125,
+    windowSeconds: 5,
+    emitChunkSize: 10,
+  };
+</script>
+{% endblock %}

@@ -1,0 +1,15 @@
+# Flask runtime requirements (development machine)
+# Install with: pip install -r requirements.txt
+
+flask==3.0.3
+flask-socketio==5.3.6
+flask-sqlalchemy==3.1.1
+flask-migrate==4.0.7
+eventlet==0.36.1
+python-dotenv==1.0.1
+pyserial==3.5
+scipy>=1.13.1
+numpy>=1.26.4
+reportlab>=4.2.2
+matplotlib>=3.9.0
+Pillow>=10.3.0

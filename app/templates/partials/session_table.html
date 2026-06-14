@@ -1,0 +1,50 @@
+<!-- Session History Table -->
+<div class="stat-card mt-2" style="text-align:left;padding:0.8rem">
+  <div class="d-flex justify-content-between align-items-center mb-2">
+    <span style="font-size:0.75rem;text-transform:uppercase;letter-spacing:.08em;color:var(--text-secondary)">
+      <i class="bi bi-clock-history me-1"></i>Session History
+    </span>
+    <button class="btn btn-sm btn-outline-secondary py-0 px-2" onclick="loadSessions()" title="Refresh">
+      <i class="bi bi-arrow-clockwise"></i>
+    </button>
+  </div>
+  <div class="session-table-wrapper">
+    <table class="table table-dark table-hover table-sm session-table mb-0">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Patient</th>
+          <th>Date</th>
+          <th>Duration</th>
+          <th>Beats</th>
+          <th>Dominant</th>
+          <th>Report</th>
+        </tr>
+      </thead>
+      <tbody id="session-tbody">
+        {% if sessions %}
+          {% for s in sessions %}
+          <tr>
+            <td>{{ s.id }}</td>
+            <td>{{ s.patient.name if s.patient else 'N/A' }}</td>
+            <td>{{ s.started_at.strftime('%m/%d %H:%M') if s.started_at else '' }}</td>
+            <td>{{ '%d:%02d'|format((s.duration_s or 0)|int // 60, (s.duration_s or 0)|int % 60) }}</td>
+            <td>{{ s.predictions.count() }}</td>
+            <td>
+              {% set dom = s._dominant_class(s.predictions.all()) %}
+              <span class="class-badge class-{{ dom }}" style="font-size:0.7rem;padding:.2rem .5rem">{{ dom[:1] }}</span>
+            </td>
+            <td>
+              <a href="/api/v1/sessions/{{ s.id }}/report" class="btn btn-sm btn-outline-info py-0 px-1" title="Download PDF" target="_blank">
+                <i class="bi bi-file-earmark-pdf"></i>
+              </a>
+            </td>
+          </tr>
+          {% endfor %}
+        {% else %}
+          <tr><td colspan="7" class="text-center text-muted py-3">No sessions yet</td></tr>
+        {% endif %}
+      </tbody>
+    </table>
+  </div>
+</div>

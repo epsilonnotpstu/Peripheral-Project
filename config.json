@@ -1,0 +1,78 @@
+{
+  "_comment": "ECG Monitor System Configuration — edit these values as needed",
+  "app": {
+    "host": "0.0.0.0",
+    "port": 5000,
+    "debug": false,
+    "secret_key": "CHANGE_ME_IN_PRODUCTION"
+  },
+  "serial": {
+    "port": "/dev/ttyUSB0",
+    "baudrate": 115200,
+    "timeout_s": 1.0,
+    "reconnect_delay_s": 3.0,
+    "simulate": false
+  },
+  "signal": {
+    "fs_hz": 125,
+    "beat_len": 187,
+    "bandpass_low_hz": 0.5,
+    "bandpass_high_hz": 40.0,
+    "bandpass_order": 4,
+    "notch_hz": 50.0,
+    "notch_q": 30.0,
+    "buffer_seconds": 5,
+    "rpeak_min_distance_samples": 50,
+    "rpeak_height_fraction": 0.5,
+    "bpm_rr_min_s": 0.3,
+    "bpm_rr_max_s": 2.0
+  },
+  "motion": {
+    "accel_std_threshold_g": 0.15,
+    "window_samples": 25
+  },
+  "inference": {
+    "model_path": "models/ecg_model_int8.tflite",
+    "alert_classes": [2, 3],
+    "alert_confidence_threshold": 0.70,
+    "timer_log": false
+  },
+  "database": {
+    "uri": "sqlite:///ecg_monitor.db"
+  },
+  "reports": {
+    "output_dir": "reports"
+  },
+  "ui": {
+    "ecg_window_seconds": 5,
+    "emit_chunk_size": 10,
+    "bpm_green_min": 60,
+    "bpm_green_max": 100,
+    "bpm_yellow_min": 40,
+    "bpm_yellow_max": 150
+  },
+  "training": {
+    "data_dir": "mitbih dataset",
+    "model_output_dir": "models",
+    "batch_size": 64,
+    "epochs": 100,
+    "early_stopping_patience": 15,
+    "reduce_lr_patience": 5,
+    "reduce_lr_factor": 0.5,
+    "min_lr": 1e-6,
+    "dropout_1": 0.4,
+    "dropout_2": 0.3,
+    "smote_sampling_strategy": {
+      "0": 20000,
+      "1": 5000,
+      "2": 8000,
+      "3": 3000,
+      "4": 8000
+    },
+    "augmentation_p": 0.5,
+    "augmentation_noise_std": 0.02,
+    "augmentation_shift_max": 10,
+    "augmentation_scale_min": 0.8,
+    "augmentation_scale_max": 1.2
+  }
+}
